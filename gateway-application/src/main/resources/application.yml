@@ -1,0 +1,20 @@
+
+server:
+  port: 8080
+
+zuul:
+  ignored-services: '*'
+  routes:
+    app1:
+      sensitiveHeaders:
+      path: /app1/**
+      url: http://localhost:8081
+    app2:
+      sensitiveHeaders:
+      path: /app2/**
+      url: http://localhost:8082
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 50000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 50000
