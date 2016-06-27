@@ -15,12 +15,13 @@
         }
 
         function connect() {
+            //var socket = new SockJS('http://localhost:15674/stomp');
             var socket = new SockJS('/app1/application1');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
+            stompClient.connect('guest', 'guest', function (frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/application1', function(greeting){
+                stompClient.subscribe('/topic/application1', function (greeting) {
                     showGreeting(JSON.parse(greeting.body).content);
                 });
             });
@@ -36,7 +37,7 @@
 
         function sendName() {
             var name = document.getElementById('name').value;
-            stompClient.send("/app/application1", {}, JSON.stringify({ 'name': name }));
+            stompClient.send("/app/application1", {}, JSON.stringify({'name': name}));
         }
 
         function showGreeting(message) {
@@ -57,7 +58,7 @@
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
     </div>
     <div id="conversationDiv">
-        <label>What is your name?</label><input type="text" id="name" />
+        <label>What is your name?</label><input type="text" id="name"/>
         <button id="sendName" onclick="sendName();">Send</button>
         <p id="response"></p>
     </div>

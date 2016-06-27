@@ -11,4 +11,10 @@ public class HelloMessage {
 		return name;
 	}
 
+	@Override
+	public String toString() {
+		return "HelloMessage{" +
+				"name='" + name + '\'' +
+				'}';
+	}
 }
