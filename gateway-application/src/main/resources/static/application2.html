@@ -15,15 +15,28 @@
         }
 
         function connect() {
-            var socket = new SockJS('/app2/application2');
+            var stompEndpoint = '/app2/application2';
+            var stompBrokerHost = '/cloud';
+            var stompBrokerUser = 'cloud';
+            var stompBrokerPwd = 'cloud';
+            var socket = new SockJS(stompEndpoint);
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
-                setConnected(true);
-                console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/application2', function(greeting){
-                    showGreeting(JSON.parse(greeting.body).content);
-                });
-            });
+            stompClient.heartbeat.incoming = 25000;
+            stompClient.heartbeat.outgoing = 25000;
+            stompClient.connect(
+                    stompBrokerUser,
+                    stompBrokerPwd,
+                    function (frame) {
+                        setConnected(true);
+                        console.log('Connected: ' + frame);
+                        stompClient.subscribe('/topic/application2', function (greeting) {
+                            showGreeting(JSON.parse(greeting.body).content);
+                        });
+                    },
+                    function (error) {
+                        console.log(error);
+                    },
+                    stompBrokerHost);
         }
 
         function disconnect() {
@@ -36,7 +49,7 @@
 
         function sendName() {
             var name = document.getElementById('name').value;
-            stompClient.send("/app/application2", {}, JSON.stringify({ 'name': name }));
+            stompClient.send("/app/application2", {}, JSON.stringify({'name': name}));
         }
 
         function showGreeting(message) {
@@ -57,7 +70,7 @@
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
     </div>
     <div id="conversationDiv">
-        <label>What is your name?</label><input type="text" id="name" />
+        <label>What is your name?</label><input type="text" id="name"/>
         <button id="sendName" onclick="sendName();">Send</button>
         <p id="response"></p>
     </div>
