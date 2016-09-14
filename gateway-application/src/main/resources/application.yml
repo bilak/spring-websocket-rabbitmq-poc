@@ -3,6 +3,8 @@ server:
   port: 8080
 
 zuul:
+  host:
+    socket-timeout-millis: 30000
   ignored-services: '*'
   routes:
     app1:
@@ -16,7 +18,7 @@ zuul:
 
 hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 50000
 ribbon:
-  ConnectTimeout: 3000
+  ConnectTimeout: 5000
   ReadTimeout: 50000
 
 
