@@ -18,7 +18,7 @@ public class AuthorizationServiceApplication {
 		SpringApplication.run(AuthorizationServiceApplication.class, args);
 	}
 
-	@GetMapping("/user")
+	@GetMapping({ "/user", "me" })
 	public Principal userInfo(Principal principal) {
 		return principal;
 	}
