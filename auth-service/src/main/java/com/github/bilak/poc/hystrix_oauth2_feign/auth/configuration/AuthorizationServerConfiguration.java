@@ -30,7 +30,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 				.withClient("demo")
 				.secret("demo")
 				.scopes("read", "write")
-				.authorizedGrantTypes("password", "client_credentials", "authorization_code", "refresh_token");
+				.authorizedGrantTypes("password", "client_credentials", "authorization_code", "refresh_token")
+				.autoApprove(true);
 	}
 
 	@Override
