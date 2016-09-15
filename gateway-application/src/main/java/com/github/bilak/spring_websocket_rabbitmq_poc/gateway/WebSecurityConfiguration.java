@@ -17,11 +17,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/uaa/**", "/login", "/resources/**", "/css/**")
+				.antMatchers("/uaa/**", "/login", "/resources/**", "/css/**", "/app1/**")
 				.permitAll()
 				.anyRequest()
 				.authenticated()
 				.and()
 				.csrf().disable();
+
 	}
 }
