@@ -10,6 +10,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 /**
  * Created by lvasek on 23/06/16.
  */
@@ -23,14 +25,15 @@ public class GreetingController {
 
 	@MessageMapping("/application1")
 	@SendTo("/topic/application1")
-	public Greeting greeting(HelloMessage message) throws Exception {
+	public Greeting greeting(HelloMessage message, Principal principal) throws Exception {
 		logger.debug("Received message {}", message);
-		sendSomethingBetween("I guess Application1 will say hello to " + message.getName());
+		sendSomethingBetween(message.getName(), principal);
 		Thread.sleep(3000); // simulated delay
-		return new Greeting("Application1: hello " + message.getName() + "!");
+		return new Greeting(String.format("Final response from user %s : hello %s !", principal.getName(), message.getName()));
 	}
 
-	private void sendSomethingBetween(String something) {
-		template.convertAndSend("/topic/application1", new Greeting(something));
+	private void sendSomethingBetween(String name, Principal principal) {
+		template.convertAndSendToUser(principal.getName(), "/queue/test", new Greeting(String.format("This is message only for user %s", principal.getName())));
+		template.convertAndSend("/topic/application1", new Greeting(String.format("User %s is saying hello to %s", principal.getName(), name)));
 	}
 }
