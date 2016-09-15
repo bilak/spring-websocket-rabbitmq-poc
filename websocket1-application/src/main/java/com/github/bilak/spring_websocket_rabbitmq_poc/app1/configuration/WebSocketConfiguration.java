@@ -2,6 +2,9 @@ package com.github.bilak.spring_websocket_rabbitmq_poc.app1.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -12,16 +15,17 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
  * Created by lvasek on 23/06/16.
  */
 @Configuration
+@EnableScheduling
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration {
 
 	@Configuration
-	public static class WebSocketMessageBrokerConfiguration extends AbstractWebSocketMessageBrokerConfigurer {
+	public static class WebSocketMessageBrokerConfiguration extends AbstractSessionWebSocketMessageBrokerConfigurer<ExpiringSession> {
 
 		@Override
 		public void configureMessageBroker(MessageBrokerRegistry config) {
 			config.setApplicationDestinationPrefixes("/app");
-			config.enableStompBrokerRelay("/topic")
+			config.enableStompBrokerRelay("/topic", "/queue")
 					.setAutoStartup(true)
 					.setClientLogin("cloud")
 					.setClientPasscode("cloud")
@@ -35,7 +39,7 @@ public class WebSocketConfiguration {
 		}
 
 		@Override
-		public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
+		public void configureStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
 			stompEndpointRegistry.addEndpoint("/application1")
 					.setHandshakeHandler(new DefaultHandshakeHandler())
 					.withSockJS()
