@@ -1,7 +1,5 @@
 package com.github.bilak.spring_websocket_rabbitmq_poc.app2.configuration;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
@@ -39,9 +37,4 @@ public class WebSocketConfiguration {
 		}
 	}
 
-	@Bean
-	FilterRegistrationBean webSocketHeaderFilter() {
-		FilterRegistrationBean filter = new FilterRegistrationBean(new WebSocketHeaderFilter());
-		return filter;
-	}
 }
