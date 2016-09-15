@@ -16,6 +16,21 @@ zuul:
       path: /app2/**
       url: http://localhost:8082
 
+AUTHORIZATION_SERVER_URL: http://localhost:7999/uaa
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      accessTokenUri: ${AUTHORIZATION_SERVER_URL}/oauth/token
+      userAuthorizationUri: ${AUTHORIZATION_SERVER_URL}/oauth/authorize
+      client-id: demo
+      client-secret: demo
+      scope: read, write
+    resource:
+      token-info-uri: ${AUTHORIZATION_SERVER_URL}/oauth/check_token
+      user-info-uri: ${AUTHORIZATION_SERVER_URL}/user
+
 hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 50000
 ribbon:
   ConnectTimeout: 5000
@@ -24,3 +39,6 @@ ribbon:
 
 logging:
   level.com.github.bilak: DEBUG
+  level.org.springframework.security: DEBUG
+
+
