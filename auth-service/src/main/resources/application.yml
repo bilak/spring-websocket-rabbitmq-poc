@@ -1,5 +1,15 @@
 server:
   port: 7999
+  context-path: /uaa
+
+security:
+  basic:
+    enabled: false
+
+logging:
+  level.org.springframework.security: DEBUG
+
+
 
 
 
