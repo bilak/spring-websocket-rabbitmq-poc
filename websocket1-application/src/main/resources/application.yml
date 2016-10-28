@@ -18,4 +18,4 @@ security:
 
 logging:
   level.com.github.bilak: DEBUG
-  level.org.springframework.session: DEBUG
+  level.org.springframework.security: DEBUG
