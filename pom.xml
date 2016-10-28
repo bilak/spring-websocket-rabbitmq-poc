@@ -10,6 +10,7 @@
 
 
     <modules>
+        <module>auth-service</module>
         <module>websocket1-application</module>
         <module>websocket2-application</module>
         <module>gateway-application</module>
